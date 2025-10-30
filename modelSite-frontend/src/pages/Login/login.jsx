@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './login.scss';
+import router_functions from '../../Routes/routes';
+
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -15,10 +17,18 @@ const Login = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your login logic here
-    console.log('Login attempt with:', formData);
+    const res = await router_functions.loginUser(formData.email, formData.password)
+    console.log(res)
+    if(res.Success){
+      console.log("Successful");
+      window.location.href = "/";
+    } else {
+      console.log("Failed")
+    }
+    
+    // console.log('Login attempt with:', formData);
   };
 
   return (

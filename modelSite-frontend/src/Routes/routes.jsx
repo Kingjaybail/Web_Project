@@ -12,8 +12,21 @@ const fetchDataFromFastAPI = async (data) => {
   }
 };
 
+const loginUser = async (username, password) => {
+  console.log(username, password)
+  try {
+    const response = await axios.get(`${API_BASE_URL}/login`);
+
+    return response.data
+  } catch (error){
+    console.error("Error getting login info");
+    throw error;
+  }
+}
+
 const router_functions = {
-  fetchDataFromFastAPI
+  fetchDataFromFastAPI,
+  loginUser
 }
 
 export default router_functions;

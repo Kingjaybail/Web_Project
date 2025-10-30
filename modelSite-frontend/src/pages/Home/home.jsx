@@ -11,11 +11,10 @@ const Home = () => {
     setStatus('Connecting...');
     try {
       const result = await router_functions.fetchDataFromFastAPI(routeKey);
-      setStatus(result?.message ?? 'Connected');
+      setStatus(result?.message);
     } catch (err) {
       setStatus(err?.message ?? String(err));
     }
-    setTimeout(() => setStatus(null), 3500);
   };
 
   const go = (path) => navigate(path);
@@ -34,7 +33,7 @@ const Home = () => {
             <button className="btn" onClick={() => go('/projects')}>
               Projects
             </button>
-            <button className="btn btn-outline" onClick={() => handleConnect('/api/connect')}>
+            <button className="btn btn-outline" onClick={() => handleConnect('status')}>
               Connect API
             </button>
             <button className="btn btn-ghost" onClick={() => handleConnect('status')}>
@@ -42,7 +41,7 @@ const Home = () => {
             </button>
           </div>
 
-          {status && <div className="connect-status">{status}</div>}
+          {<div className="connect-status">{status}</div>}
         </div>
       </header>
 
