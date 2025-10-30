@@ -31,9 +31,6 @@ const Home = () => {
           </p>
 
           <div className="hero-actions">
-            <button className="btn btn-primary" onClick={() => go('/dashboard')}>
-              Dashboard
-            </button>
             <button className="btn" onClick={() => go('/projects')}>
               Projects
             </button>
