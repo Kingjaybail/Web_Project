@@ -1,0 +1,145 @@
+$primary-color: #2563eb;
+$secondary-color: #1e40af;
+$text-color: #1f2937;
+$muted-text: #4b5563;
+$background-color: #ffffff;
+$shadow: 0 4px 8px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.04);
+$transition: all 0.3s ease;
+
+.about-page {
+  background: $background-color;
+  color: $text-color;
+  font-family: "Inter", "Poppins", sans-serif;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 0;
+
+  // ------------------------
+  // About Description
+  // ------------------------
+  .about-description {
+    max-width: 800px;
+    text-align: center;
+    margin-bottom: 4rem;
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1.1rem;
+      color: $muted-text;
+      line-height: 1.75;
+    }
+  }
+
+  // ------------------------
+  // Contact Form Section
+  // ------------------------
+  .contact-section {
+    background: #fff;
+    padding: 2.5rem 2rem;
+    border-radius: 1rem;
+    box-shadow: $shadow;
+    max-width: 600px;
+    width: 100%;
+    text-align: left;
+    border: 1px solid #f1f1f1;
+
+    h2 {
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      color: $text-color;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+
+      label {
+        display: flex;
+        flex-direction: column;
+        font-weight: 500;
+        color: $text-color;
+        font-size: 0.95rem;
+      }
+
+      input,
+      textarea {
+        margin-top: 0.5rem;
+        padding: 0.9rem 1rem;
+        font-size: 1rem;
+        border: 1.5px solid #d1d5db;
+        border-radius: 8px;
+        background: #fff;
+        color: $text-color;
+        transition: $transition;
+        resize: none;
+
+        &:focus {
+          outline: none;
+          border-color: $primary-color;
+          box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        &::placeholder {
+          color: #9ca3af;
+        }
+      }
+
+      textarea {
+        min-height: 120px;
+      }
+
+      button {
+        background: linear-gradient(135deg, $primary-color, $secondary-color);
+        color: white;
+        font-size: 1.05rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 8px;
+        padding: 1rem;
+        cursor: pointer;
+        transition: $transition;
+
+        &:hover {
+          background: linear-gradient(135deg, lighten($primary-color, 5%), $primary-color);
+          box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+        }
+
+        &:active {
+          transform: scale(0.98);
+        }
+      }
+    }
+
+    p {
+      text-align: center;
+      margin-top: 1rem;
+      color: $muted-text;
+      font-size: 0.95rem;
+      animation: fadeIn 0.3s ease;
+    }
+  }
+}
+
+// ------------------------
+// Animation
+// ------------------------
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

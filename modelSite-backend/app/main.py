@@ -1,8 +1,8 @@
 # uvicorn app.main:app --reload --port 8000 
-
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile, Form
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
+import app.models as models 
 
 app = FastAPI()
 
@@ -18,9 +18,37 @@ app.add_middleware(
 async def root():
   return {"message": "Welcome"}
 
-@app.get("/linear-regression")
-async def linear_regression():
-  return {"model": "linear_regression", "message": "Linear Regression endpoint"}
+@app.get("/status")
+async def status():
+  return {"message": "Backend is running properly"}
+
+@app.get("/login")
+async def login():
+  return {"Success": "login successful"}
+
+@app.post("/linear-regression")
+async def linear_regression(file: UploadFile, target_column: str = Form(...), metrics: str = Form(...)):
+    contents = await file.read()
+    print(f"Received file: {file.filename}")
+    print(f"Target column: {target_column}")
+    print(f"Metrics: {metrics}")
+
+    try:
+        res = models.linearregression.process_linear_regression(contents, file.filename, target_column)
+        if "error" in res:
+            return {"error": res["error"]}
+        return {
+            "model": res["model_type"],
+            "message": "Model executed successfully",
+            "metrics": res["metrics"],
+            "coefficients": res["coefficients"],
+            "intercept": res["intercept"],
+            "predictions_preview": res["predictions_preview"]
+        }
+    except Exception as e:
+        return {"error": str(e)}
+
+
 
 @app.get("/logistic-regression")
 async def logistic_regression():

@@ -2,69 +2,87 @@
 $primary-color: #2563eb;
 $secondary-color: #1e40af;
 $text-color: #1f2937;
-$light-bg: #f3f4f6;
+$muted-text: #4b5563;
+$background-color: #ffffff;
 $transition: all 0.3s ease;
-$shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+$shadow: 0 4px 8px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.04);
 
 .home-page {
   min-height: 100vh;
-  background: linear-gradient(to bottom, #ffffff, $light-bg);
+  background: $background-color;
+  color: $text-color;
+  font-family: "Inter", "Poppins", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
+  // ------------------------
+  // HERO SECTION
+  // ------------------------
   .hero {
-    padding: 6rem 2rem;
+    width: 100%;
+    padding: 6rem 2rem 4rem;
     text-align: center;
-    
+
     .hero-content {
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto;
     }
 
     .hero-title {
-      font-size: 3.5rem;
+      font-size: 3rem;
       font-weight: 700;
       color: $text-color;
-      margin-bottom: 1.5rem;
-      
+      margin-bottom: 1.25rem;
+      line-height: 1.2;
+
       @media (max-width: 768px) {
-        font-size: 2.5rem;
+        font-size: 2.25rem;
       }
     }
 
     .hero-desc {
-      font-size: 1.25rem;
-      color: #4b5563;
+      font-size: 1.15rem;
+      color: $muted-text;
       margin-bottom: 2.5rem;
-      line-height: 1.7;
+      line-height: 1.75;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .hero-actions {
       display: flex;
-      gap: 1rem;
       justify-content: center;
+      align-items: center;
       flex-wrap: wrap;
+      gap: 1rem;
       margin-bottom: 2rem;
 
       .btn {
-        padding: 0.75rem 1.5rem;
+        padding: 0.85rem 1.75rem;
         border-radius: 0.5rem;
         font-weight: 500;
-        transition: $transition;
+        font-size: 1rem;
         cursor: pointer;
+        transition: $transition;
 
         &.btn-primary {
           background-color: $primary-color;
           color: white;
           border: none;
+          box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
 
           &:hover {
             background-color: $secondary-color;
+            box-shadow: 0 6px 12px rgba(37, 99, 235, 0.25);
           }
         }
 
         &.btn-outline {
           border: 2px solid $primary-color;
-          color: $primary-color;
           background: transparent;
+          color: $primary-color;
 
           &:hover {
             background-color: $primary-color;
@@ -75,51 +93,61 @@ $shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         &.btn-ghost {
           background: transparent;
           color: $text-color;
+          border: none;
 
           &:hover {
-            background-color: $light-bg;
+            background-color: #f3f4f6;
           }
         }
       }
     }
 
     .connect-status {
-      padding: 0.75rem;
+      display: inline-block;
+      padding: 0.85rem 1.25rem;
       border-radius: 0.5rem;
-      background-color: white;
+      background-color: #f9fafb;
+      color: $text-color;
       box-shadow: $shadow;
+      font-size: 0.95rem;
       animation: fadeIn 0.3s ease;
+      min-width: 200px;
     }
   }
 
   .tiles {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    padding: 2rem;
+    width: 100%;
     max-width: 1200px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    padding: 4rem 2rem;
     margin: 0 auto;
 
     .tile {
-      background: white;
-      padding: 2rem;
+      background: $background-color;
       border-radius: 1rem;
+      padding: 2rem;
       box-shadow: $shadow;
       transition: $transition;
+      text-align: left;
+      border: 1px solid #f0f0f0;
 
       &:hover {
-        transform: translateY(-5px);
+        transform: translateY(-6px);
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
       }
 
       h3 {
-        color: $text-color;
         font-size: 1.5rem;
+        color: $text-color;
         margin-bottom: 1rem;
       }
 
       p {
-        color: #6b7280;
-        line-height: 1.6;
+        font-size: 1rem;
+        color: $muted-text;
+        line-height: 1.7;
       }
     }
   }

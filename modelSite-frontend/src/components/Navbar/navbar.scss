@@ -1,26 +1,56 @@
-/* src/components/Navbar/navbar.scss */
 .navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 4rem;
   background: #222;
-  padding: 0.75rem 2rem;
-  display: flex;
-  align-items: center;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+
+  .navbar-inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;          
+    height: 100%;
+  }
+
+  .navbar-brand {
+    color: white;
+  }
+  .navbar-logo {
+    display: flex;
+    align-items: left;
+    gap: 0.5rem; 
+    text-decoration: none;
+    color: #fff;
+    font-weight: 700;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: #ffd700;
+    }
+
+    .brand-text {
+      font-size: 1.2rem;
+      margin: 0;
+      color: white;
+      float: left;
+      color: inherit; 
+    }
+  }
 
   .navbar-list {
     list-style: none;
     display: flex;
+    gap: 1rem;
     margin: 0;
     padding: 0;
-    width: 100%;
-    justify-content: flex-end;
-  }
-
-  .navbar-item {
-    margin-left: 2rem;
-
-    &:first-child {
-      margin-left: 0;
-    }
+    align-items: center;
   }
 
   .navbar-link {
@@ -28,14 +58,19 @@
     text-decoration: none;
     font-weight: 500;
     font-size: 1rem;
-    padding: 0.5rem 1rem;
-    border-radius: 4px;
-    transition: background 0.2s;
+    display: inline-flex;
+    align-items: center;
+    height: 100%;
+    padding: 0.5rem 1.25rem;
+    border-radius: 6px;
+    transition: background 0.2s, outline 0.2s, color 0.2s;
 
     &:hover,
     &:focus {
       background: #444;
       color: #ffd700;
+      outline: 2px solid #ffd700;
+      outline-offset: 2px;
     }
   }
 }

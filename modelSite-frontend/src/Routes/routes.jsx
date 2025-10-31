@@ -13,20 +13,35 @@ const fetchDataFromFastAPI = async (data) => {
 };
 
 const loginUser = async (username, password) => {
-  console.log(username, password)
   try {
-    const response = await axios.get(`${API_BASE_URL}/login`);
-
-    return response.data
-  } catch (error){
-    console.error("Error getting login info");
+    const response = await axios.post(`${API_BASE_URL}/login`, {
+      username,
+      password,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error logging in:", error);
     throw error;
   }
-}
+};
+
+const runModel = async (model, formData) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/${model}`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(`Error running ${model}:`, error);
+    throw error;
+  }
+};
+
 
 const router_functions = {
   fetchDataFromFastAPI,
-  loginUser
+  loginUser,
+  runModel
 }
 
 export default router_functions;

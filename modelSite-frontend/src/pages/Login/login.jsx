@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import './login.scss';
 import router_functions from '../../Routes/routes';
 
-
 const Login = () => {
   const [formData, setFormData] = useState({
-    email: '',
+    username: '',
     password: '',
   });
 
@@ -19,34 +18,38 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await router_functions.loginUser(formData.email, formData.password)
-    console.log(res)
-    if(res.Success){
+
+    const res = await router_functions.loginUser(formData.username, formData.password);
+    console.log(res);
+
+    if (res.Success) {
       console.log("Successful");
       window.location.href = "/";
     } else {
-      console.log("Failed")
+      console.log("Failed");
     }
-    
-    // console.log('Login attempt with:', formData);
   };
 
   return (
     <div className="login-container">
       <form className="login-form" onSubmit={handleSubmit}>
         <h2>Welcome Back</h2>
+
+        {/* Username Field */}
         <div className="form-group">
-          <label htmlFor="email">Email</label>
+          <label htmlFor="username">Username</label>
           <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
+            type="text"
+            id="username"
+            name="username"
+            value={formData.username}
             onChange={handleChange}
-            placeholder="Enter your email"
+            placeholder="Enter your username"
             required
           />
         </div>
+
+        {/* Password Field */}
         <div className="form-group">
           <label htmlFor="password">Password</label>
           <input
@@ -59,11 +62,13 @@ const Login = () => {
             required
           />
         </div>
+
         <button type="submit" className="submit-button">
           Log In
         </button>
+
         <div className="login-footer">
-          Don't have an account?<a href="/signup">Sign up</a>
+          Don’t have an account?<a href="/signup">Sign up</a>
         </div>
       </form>
     </div>

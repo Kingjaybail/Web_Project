@@ -1,0 +1,158 @@
+$primary-color: #2563eb;
+$secondary-color: #1e40af;
+$text-color: #1f2937;
+$muted-text: #4b5563;
+$background-color: #ffffff;
+$shadow: 0 4px 8px rgba(0, 0, 0, 0.05), 0 2px 4px rgba(0, 0, 0, 0.04);
+$transition: all 0.3s ease;
+
+.models-page {
+  background: $background-color;
+  color: $text-color;
+  font-family: "Inter", "Poppins", sans-serif;
+  height: 100%;
+  padding: 6rem 2rem 4rem;
+  max-width: 900px;
+  margin: 0 auto;
+
+  h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 0.75rem;
+    margin-top: -5rem;
+  }
+
+  .subtitle {
+    text-align: center;
+    color: $muted-text;
+    margin-bottom: 2.5rem;
+    font-size: 1.1rem;
+  }
+
+  .model-form {
+    background: #fff;
+    padding: 2.5rem;
+    border-radius: 1rem;
+    box-shadow: $shadow;
+    border: 1px solid #f1f1f1;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      label {
+        font-weight: 500;
+        font-size: 1rem;
+        color: $text-color;
+      }
+
+      input[type="file"],
+      select {
+        padding: 0.75rem 1rem;
+        border: 1.5px solid #d1d5db;
+        border-radius: 8px;
+        font-size: 1rem;
+        color: black;
+        background: #fff;
+        transition: $transition;
+
+        &:focus {
+          border-color: $primary-color;
+          box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+          outline: none;
+        }
+      }
+
+      .file-name {
+        color: $muted-text;
+        font-size: 0.95rem;
+      }
+
+      .checkbox-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 0.5rem 1rem;
+
+        .checkbox-item {
+          font-size: 0.95rem;
+          color: $text-color;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+
+          input {
+            accent-color: $primary-color;
+          }
+        }
+      }
+    }
+
+    .submit-button {
+      background: linear-gradient(135deg, $primary-color, $secondary-color);
+      color: white;
+      font-size: 1.05rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      padding: 1rem;
+      cursor: pointer;
+      transition: $transition;
+      align-self: center;
+      width: 100%;
+
+      &:hover {
+        background: linear-gradient(135deg, lighten($primary-color, 5%), $primary-color);
+        box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+      }
+
+      &:active {
+        transform: scale(0.98);
+      }
+    }
+  }
+
+  .status {
+    margin-top: 1.5rem;
+    text-align: center;
+    color: $muted-text;
+    font-size: 1rem;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .results-section {
+    margin-top: 3rem;
+    text-align: center;
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+
+    .charts-placeholder {
+      background: #f9fafb;
+      padding: 2rem;
+      border-radius: 1rem;
+      border: 1px solid #e5e7eb;
+      color: $muted-text;
+      font-size: 1rem;
+      box-shadow: $shadow;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

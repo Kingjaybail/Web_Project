@@ -4,8 +4,13 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  /* Default to a light page background so the app content doesn't appear framed
+     by a dark page background. If you prefer a dark theme, revert this and
+     enable the prefers-color-scheme: dark media rules as needed. */
+  color: #213547;
+  background-color: #ffffff;
+  /* navbar height used to offset page content so it isn't hidden under the fixed navbar */
+  --navbar-height: 64px;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -24,10 +29,12 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
+  /* Don't center the entire app root vertically — keep normal document flow.
+     This prevents a dark page background from framing a centered white box. */
   min-width: 320px;
   min-height: 100vh;
+  /* push content down so fixed navbar doesn't overlap it */
+  padding-top: var(--navbar-height);
 }
 
 h1 {

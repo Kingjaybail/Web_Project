@@ -28,20 +28,6 @@ const Home = () => {
             A modern UI for managing and exploring your models. Quick access to dashboards, projects,
             and backend connections.
           </p>
-
-          <div className="hero-actions">
-            <button className="btn" onClick={() => go('/projects')}>
-              Projects
-            </button>
-            <button className="btn btn-outline" onClick={() => handleConnect('status')}>
-              Connect API
-            </button>
-            <button className="btn btn-ghost" onClick={() => handleConnect('status')}>
-              Check Connection
-            </button>
-          </div>
-
-          {<div className="connect-status">{status}</div>}
         </div>
       </header>
 
