@@ -112,28 +112,4 @@
   .login-form h2 {
     font-size: 1.6rem;
   }
-
-  .feedback-message {
-    margin: 10px 0;
-    padding: 8px;
-    border-radius: 6px;
-    text-align: center;
-    font-weight: 500;
-  }
-
-  .feedback-message.success {
-    background-color: #e0f7e9;
-    color: #2e7d32;
-  }
-
-  .feedback-message.error {
-    background-color: #fdecea;
-    color: #c62828;
-  }
-
-  .submit-button[disabled] {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-
 }

@@ -25,8 +25,7 @@ const Home = () => {
         <div className="hero-content">
           <h1 className="hero-title">Welcome to ModelSite</h1>
           <p className="hero-desc">
-            A modern UI for managing and exploring your models. Quick access to dashboards, projects,
-            and backend connections.
+            An app for managing and exploring your models.
           </p>
         </div>
       </header>

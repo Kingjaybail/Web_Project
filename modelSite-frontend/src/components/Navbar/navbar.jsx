@@ -1,6 +1,13 @@
 import { Link } from 'react-router-dom';
 import './navbar.scss';
 const Navbar = () => {
+
+  const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    window.location.href = '/login';
+  };
+
+
   return (
     <nav className="navbar">
       <div className="navbar-inner">
@@ -32,6 +39,9 @@ const Navbar = () => {
             </Link>
           </li>
         </ul>
+        {localStorage.getItem('isLoggedIn') === 'true' && (
+          <button onClick={handleLogout}>Logout</button>
+        )}
       </div>
     </nav>
   );

@@ -1,58 +1,47 @@
 import React, { useState } from 'react';
-import './login.scss';
+import './signup.scss';
 import router_functions from '../../Routes/routes';
 
-const Login = () => {
+const Signup = () => {
   const [formData, setFormData] = useState({
     username: '',
     password: '',
   });
 
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevState) => ({
+    setFormData(prevState => ({
       ...prevState,
-      [name]: value,
+      [name]: value
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage(null);
 
-    try {
-      const res = await router_functions.loginUser(formData.username, formData.password);
-      console.log('Login response:', res);
+      const res = await router_functions.signup(formData.username, formData.password);
+      console.log('Signup Response:', res);
 
-      if (res.data === true) {
-        setMessage({ type: 'success', text: 'Logging in...' });
-
-        setTimeout(() => {
-          localStorage.setItem('isLoggedIn', 'true');
-          window.location.href = '/';
-        }, 1500);
+      if (res.success) {
+        alert('Signup successful!');
+        window.location.href = '/login';
+      } else if(res.failed) {
+        alert('Signup failed username already in database');
       } else {
-        setMessage({ type: 'error', text: 'Invalid username or password.' });
+        alert('Signup failed unknown error')
       }
-    } catch (error) {
-      console.error('Login failed:', error);
-      setMessage({
-        type: 'error',
-        text: 'Unable to connect to server. Please try again later.',
-      });
-    } finally {
-      setLoading(false);
-    }
+
+      setLoading(false)
+
   };
 
   return (
     <div className="login-container">
       <form className="login-form" onSubmit={handleSubmit}>
-        <h2>Welcome Back</h2>
+        <h2>Sign Up</h2>
 
         <div className="form-group">
           <label htmlFor="username">Username</label>
@@ -64,7 +53,6 @@ const Login = () => {
             onChange={handleChange}
             placeholder="Enter your username"
             required
-            disabled={loading}
           />
         </div>
 
@@ -78,30 +66,15 @@ const Login = () => {
             onChange={handleChange}
             placeholder="Enter your password"
             required
-            disabled={loading}
           />
         </div>
 
-        {message && (
-          <div
-            className={`feedback-message ${
-              message.type === 'error' ? 'error' : 'success'
-            }`}
-          >
-            {message.text}
-          </div>
-        )}
-
         <button type="submit" className="submit-button" disabled={loading}>
-          {loading ? 'Logging in...' : 'Log In'}
+          {loading ? 'Signing up...' : 'Sign Up'}
         </button>
-
-        <div className="login-footer">
-          Don’t have an account?<a href="/signup">Sign up</a>
-        </div>
       </form>
     </div>
   );
 };
 
-export default Login;
+export default Signup;
