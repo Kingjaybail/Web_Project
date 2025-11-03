@@ -28,7 +28,7 @@ export default function About() {
       <section className="about-description">
         <h1>About</h1>
         <p>
-          Welcome to my Machine Learning Platform - a comprehensive web-based solution 
+          Welcome to my Machine Learning Platform a comprehensive web-based solution
           for data analysis and model development. My platform enables users to upload 
           various data formats (.txt, .csv, Excel) and apply multiple machine learning 
           models including linear regression, logistic regression, decision trees, 
@@ -36,7 +36,7 @@ export default function About() {
         </p>
         <p>
           Users can leverage powerful visualization tools to evaluate model performance 
-          through accuracy metrics, ROC curves, and comparative analysis charts. Our 
+          through accuracy metrics, and comparative analysis charts. Our
           secure platform requires authentication to access these features, ensuring 
           your data and analysis remain protected.
         </p>
@@ -47,48 +47,6 @@ export default function About() {
         </p>
       </section>
 
-      <section className="contact-section">
-        <h2>Contact Me</h2>
-        <form onSubmit={handleSubmit}>
-          <label>
-            Name
-            <input
-              type="text"
-              name="name"
-              value={form.name}
-              onChange={handleChange}
-              required
-            />
-          </label>
-
-          <label>
-            Email
-            <input
-              type="email"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-              required
-            />
-          </label>
-
-          <label>
-            Message
-            <textarea
-              name="message"
-              value={form.message}
-              onChange={handleChange}
-              required
-            />
-          </label>
-
-          <button type="submit">Send</button>
-        </form>
-
-        {status === "sending" && <p>Sending...</p>}
-        {status === "sent" && <p>Message sent. Thank you!</p>}
-        {status === "error" && <p>There was an error. Please try again.</p>}
-      </section>
     </div>
   );
 }
