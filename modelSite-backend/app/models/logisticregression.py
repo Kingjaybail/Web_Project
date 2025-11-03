@@ -1,67 +1,35 @@
-import io
-import json
-import pandas as pd
+# models/logistic_regression_model.py
 import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import (
-    accuracy_score,
-    precision_score,
-    recall_score,
-    f1_score,
-    confusion_matrix,
-)
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
+from app.utils.data_utils import load_dataset, prepare_features, train_test_split_data, parse_metrics
+import pandas as pd
+
 
 def process_logistic_regression(file: bytes, filename: str, target_column: str, metrics_list=None):
-    ext = filename.split(".")[-1].lower()
-    if ext == "csv":
-        df = pd.read_csv(io.BytesIO(file))
-    elif ext in ["xls", "xlsx"]:
-        df = pd.read_excel(io.BytesIO(file))
-    elif ext == "txt":
-        df = pd.read_csv(io.BytesIO(file), delimiter="\t")
-    else:
-        return {"error": f"Unsupported file format: {ext}"}
+    df = load_dataset(file, filename)
+    X_scaled, y, feature_names = prepare_features(df, target_column)
 
-    if target_column not in df.columns:
-        return {"error": f"Target column '{target_column}' not found in dataset."}
+    # --- Validate target ---
+    if not y.dtype == object and y.nunique() > 10:
+        return {"error": "Target appears continuous. Use a regression model instead."}
 
-    if isinstance(metrics_list, str):
-        try:
-            metrics_list = json.loads(metrics_list)
-        except json.JSONDecodeError:
-            metrics_list = []
-    elif metrics_list is None:
-        metrics_list = []
+    # Factorize categorical labels
+    y = pd.factorize(y)[0]
 
-    metrics_list = [m.lower().replace(" ", "_") for m in metrics_list]
+    # --- Metrics list ---
     valid_metrics = {"accuracy", "precision", "recall", "f1_score", "confusion_matrix"}
-    metrics_list = [m for m in metrics_list if m in valid_metrics] or list(valid_metrics)
+    metrics_list = parse_metrics(metrics_list, valid_metrics)
 
-    df = df.dropna(subset=[target_column])
-    X = df.drop(columns=[target_column])
-    y = df[target_column]
+    # --- Train/Test Split ---
+    X_train, X_test, y_train, y_test = train_test_split_data(X_scaled, y)
 
-    if not pd.api.types.is_numeric_dtype(y):
-        y = pd.factorize(y)[0]
-
-    X = pd.get_dummies(X, drop_first=True).select_dtypes(include=[np.number])
-    if X.empty:
-        return {"error": "No valid numeric features found."}
-
-    X_scaled = StandardScaler().fit_transform(X)
-    X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
-
+    # --- Train Model ---
     model = LogisticRegression(max_iter=1000)
     model.fit(X_train, y_train)
     y_pred = model.predict(X_test)
 
-    print("\n--- Logistic Regression: Predictions Preview ---")
-    for a, p in zip(y_test[:10], y_pred[:10]):
-        print(f"Actual: {a} | Predicted: {p}")
-    print("------------------------------------------------\n")
-
+    # --- Metrics ---
     results = {}
     if "accuracy" in metrics_list:
         results["accuracy"] = round(accuracy_score(y_test, y_pred), 4)
@@ -77,9 +45,10 @@ def process_logistic_regression(file: bytes, filename: str, target_column: str, 
     return {
         "model_type": "Logistic Regression",
         "metrics": results,
-        "coefficients": dict(zip(X.columns, np.round(model.coef_[0], 4))),
+        "coefficients": dict(zip(feature_names, np.round(model.coef_[0], 4))),
         "intercept": round(float(model.intercept_[0]), 4),
-        "predictions_preview": [
-            {"actual": int(a), "predicted": int(p)} for a, p in zip(y_test[:10], y_pred[:10])
-        ],
+        "predictions_preview": [{"actual": int(a), "predicted": int(p)} for a, p in zip(y_test[:10], y_pred[:10])]
     }
+
+
+

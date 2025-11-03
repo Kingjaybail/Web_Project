@@ -1,6 +1,6 @@
-# models/decision_tree_model.py
+# models/boosting_model.py
 import numpy as np
-from sklearn.tree import DecisionTreeRegressor, DecisionTreeClassifier
+from sklearn.ensemble import GradientBoostingRegressor, GradientBoostingClassifier
 from sklearn.metrics import (
     mean_squared_error,
     mean_absolute_error,
@@ -14,20 +14,31 @@ from sklearn.metrics import (
 from app.utils.data_utils import load_dataset, prepare_features, train_test_split_data, parse_metrics
 
 
-def process_decision_tree(file: bytes, filename: str, target_column: str, metrics_list=None):
+def process_boosting(file: bytes, filename: str, target_column: str, metrics_list=None):
+    # --- Load and preprocess dataset ---
     df = load_dataset(file, filename)
     X_scaled, y, feature_names = prepare_features(df, target_column)
 
     # --- Detect problem type ---
     if np.issubdtype(y.dtype, np.number) and y.nunique() > 10:
         problem_type = "regression"
-        model = DecisionTreeRegressor(random_state=42)
+        model = GradientBoostingRegressor(
+            n_estimators=100,
+            learning_rate=0.1,
+            max_depth=3,
+            random_state=42
+        )
         valid_metrics = {"mse", "mae", "r2"}
     else:
         problem_type = "classification"
-        model = DecisionTreeClassifier(random_state=42)
+        model = GradientBoostingClassifier(
+            n_estimators=100,
+            learning_rate=0.1,
+            max_depth=3,
+            random_state=42
+        )
         valid_metrics = {"accuracy", "precision", "recall", "f1_score", "confusion_matrix"}
-        # Encode non-numeric categories if necessary
+        # Encode non-numeric labels if necessary
         if not np.issubdtype(y.dtype, np.number):
             from pandas import factorize
             y = factorize(y)[0]
@@ -68,11 +79,12 @@ def process_decision_tree(file: bytes, filename: str, target_column: str, metric
 
     # --- Return consistent response ---
     return {
-        "model_type": "Decision Tree (Regression)" if problem_type == "regression" else "Decision Tree (Classification)",
+        "model_type": "Boosting (Regression)" if problem_type == "regression" else "Boosting (Classification)",
         "metrics": results,
         "feature_importances": feature_importances,
         "parameters": {
-            "criterion": model.criterion,
+            "n_estimators": model.n_estimators,
+            "learning_rate": model.learning_rate,
             "max_depth": model.max_depth,
             "random_state": 42,
         },

@@ -34,9 +34,9 @@ const Navbar = () => {
             </Link>
           </li>
           <li className="navbar-item">
-            <Link to="/login" className="navbar-link">
-              Login
-            </Link>
+              <Link to="/comparisons" className="navbar-link">
+                Comparisons
+              </Link>
           </li>
         </ul>
         {localStorage.getItem('isLoggedIn') === 'true' && (

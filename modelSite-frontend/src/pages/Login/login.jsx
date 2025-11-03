@@ -33,6 +33,7 @@ const Login = () => {
 
         setTimeout(() => {
           localStorage.setItem('isLoggedIn', 'true');
+          localStorage.setItem("username", username);
           window.location.href = '/';
         }, 1500);
       } else {
