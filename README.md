@@ -1,3 +1,8 @@
+Requirements
+Docker Desktop or some version of Docker
+A web browser
+A computer
+
 How to use
 1. Clone the code by: git clone https://github.com/Kingjaybail/Web_Project.git
 2. cd into Web_Project folder
