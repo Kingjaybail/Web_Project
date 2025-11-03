@@ -4,16 +4,16 @@ from datetime import datetime
 
 DB_NAME = "app/database/users.db"
 
-
 def get_connection():
+    """Helper to open a new database connection."""
     return sqlite3.connect(DB_NAME)
 
-
 def initialize_db():
+    """Initialize users and model_results tables if they don't exist."""
     conn = get_connection()
     cursor = conn.cursor()
 
-    # Users table
+    # Create users table
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -22,7 +22,7 @@ def initialize_db():
         );
     """)
 
-    # Model results table
+    # Create model_results table (ties metrics to usernames)
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS model_results (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -32,7 +32,8 @@ def initialize_db():
             target_column TEXT,
             metrics TEXT,
             metric_value REAL,
-            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+            timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY(username) REFERENCES users(username)
         );
     """)
 
@@ -44,68 +45,39 @@ def initialize_db():
 # ------------------------------
 # User Management
 # ------------------------------
-
 def add_user(username: str, password: str):
     conn = get_connection()
     cursor = conn.cursor()
     try:
         cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
         conn.commit()
-        return {'success': 'success'}
+        return {"success": "success"}
     except sqlite3.IntegrityError:
-        return {'failed': 'failed'}
+        return {"failed": "User already exists"}
     finally:
         conn.close()
-
-
-def delete_user(username: str):
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute("DELETE FROM users WHERE username = ?", (username,))
-    conn.commit()
-    deleted = cursor.rowcount > 0
-    conn.close()
-    return deleted
-
-
-def change_password(username: str, new_password: str):
-    conn = get_connection()
-    cursor = conn.cursor()
-    cursor.execute("UPDATE users SET password = ? WHERE username = ?", (new_password, username))
-    conn.commit()
-    updated = cursor.rowcount > 0
-    conn.close()
-    return updated
-
 
 def get_user(username: str, password: str):
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT id, username FROM users WHERE username = ? AND password = ?", (username, password))
+    cursor.execute("SELECT id FROM users WHERE username = ? AND password = ?", (username, password))
     user = cursor.fetchone()
     conn.close()
     return bool(user)
 
 
 # ------------------------------
-# Model History Functions
+# Model Tracking
 # ------------------------------
-
 def save_model_result(username: str, dataset_name: str, model_type: str, target_column: str, metrics: dict):
-    """Save a model run to the history table."""
     conn = get_connection()
     cursor = conn.cursor()
 
-    # Choose a single numeric value to summarize performance
-    metric_value = (
-            metrics.get("accuracy")
-            or metrics.get("r2_score")
-            or (1 / metrics.get("mse", 1))
-    )
+    # Extract a key metric for comparison
+    metric_value = metrics.get("accuracy") or metrics.get("r2_score") or (1 / metrics.get("mse", 1))
 
     cursor.execute("""
-        INSERT INTO model_results 
-        (username, dataset_name, model_type, target_column, metrics, metric_value, timestamp)
+        INSERT INTO model_results (username, dataset_name, model_type, target_column, metrics, metric_value, timestamp)
         VALUES (?, ?, ?, ?, ?, ?, ?)
     """, (
         username,
@@ -114,7 +86,7 @@ def save_model_result(username: str, dataset_name: str, model_type: str, target_
         target_column,
         json.dumps(metrics),
         round(metric_value, 4),
-        datetime.now()
+        datetime.now(),
     ))
 
     conn.commit()
@@ -122,7 +94,6 @@ def save_model_result(username: str, dataset_name: str, model_type: str, target_
 
 
 def get_user_model_history(username: str):
-    """Return all stored models for a given user."""
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute("""
@@ -144,8 +115,8 @@ def get_user_model_history(username: str):
         history.append({
             "dataset_name": dataset,
             "model": model,
-            "target": target,
-            "metric": round(metric_value, 4) if metric_value else None,
+            "target_column": target,
+            "metric_value": metric_value,
             "metrics": metrics,
             "timestamp": ts
         })
@@ -153,7 +124,6 @@ def get_user_model_history(username: str):
 
 
 def clear_user_model_history(username: str):
-    """Delete all results for a specific user."""
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute("DELETE FROM model_results WHERE username = ?", (username,))
@@ -161,5 +131,5 @@ def clear_user_model_history(username: str):
     conn.close()
 
 
-# Initialize DB when this file is imported
+# Run on import
 initialize_db()

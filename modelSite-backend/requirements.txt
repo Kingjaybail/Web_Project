@@ -1,6 +1,18 @@
 fastapi
 uvicorn
-scikit-learn
-pandas
 python-multipart
+pydantic
+
+numpy
+pandas
+scikit-learn
+joblib
+
 openpyxl
+xlrd
+matplotlib
+seaborn
+boto3
+
+torch==2.4.1+cpu
+--extra-index-url https://download.pytorch.org/whl/cpu

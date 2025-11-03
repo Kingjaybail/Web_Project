@@ -33,7 +33,7 @@ const Login = () => {
 
         setTimeout(() => {
           localStorage.setItem('isLoggedIn', 'true');
-          localStorage.setItem("username", username);
+          localStorage.setItem("username", formData.username);
           window.location.href = '/';
         }, 1500);
       } else {

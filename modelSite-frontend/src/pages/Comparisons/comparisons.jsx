@@ -24,7 +24,7 @@ export default function Comparisons() {
         setStatus("Please log in to view comparisons.");
         return;
       }
-
+        console.log(username)
       try {
         const res = await fetch(`http://127.0.0.1:8000/model-history/${username}`);
         const data = await res.json();
@@ -100,16 +100,17 @@ export default function Comparisons() {
           <h2 className="dataset-title">{dataset}</h2>
 
           {/* Bar Chart for this dataset */}
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={models}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="model" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="metric" fill="#82ca9d" name="Accuracy / R² / (1/MSE)" />
-            </BarChart>
-          </ResponsiveContainer>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={models}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="model" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="metric_value" fill="#82ca9d" name="Accuracy / R² / (1/MSE)" />
+              </BarChart>
+            </ResponsiveContainer>
+
 
           {/* Metrics table */}
           <table className="metrics-table">

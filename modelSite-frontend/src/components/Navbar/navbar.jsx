@@ -4,6 +4,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('username');
     window.location.href = '/login';
   };
 
